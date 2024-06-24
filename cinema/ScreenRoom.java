@@ -9,7 +9,13 @@ public class ScreenRoom {
     private int availableSeats;
     private int currentIncome;
 
-    public ScreenRoom(int rows, int seats) {
+    public ScreenRoom(int rows, int seats) throws IllegalArgumentException {
+        if (rows <= 0) {
+            throw new IllegalArgumentException("rows must be greater than 0");
+        }
+        if (seats <= 0) {
+            throw new IllegalArgumentException("seats must be greater than 0");
+        }
         this.rows = rows;
         this.seats = seats;
         this.totalSeats = this.rows * this.seats;
@@ -53,11 +59,23 @@ public class ScreenRoom {
         return matrix;
     }
 
-    public boolean seatIsTaken(int row, int seat) {
+    public boolean seatIsTaken(int row, int seat) throws IllegalArgumentException {
+        if (row < 1 || row > this.rows) {
+            throw new IllegalArgumentException("row number must be between 1 and " + this.rows);
+        }
+        if (seat < 1 || seat > this.seats) {
+            throw new IllegalArgumentException("seat number must be between 1 and " + this.seats);
+        }
         return this.matrix[row - 1][seat - 1] == 'B';
     }
 
-    public boolean takeSeat(int row, int seat) {
+    public boolean takeSeat(int row, int seat) throws IllegalArgumentException {
+        if (row < 1 || row > this.rows) {
+            throw new IllegalArgumentException("row number must be between 1 and " + this.rows);
+        }
+        if (seat < 1 || seat > this.seats) {
+            throw new IllegalArgumentException("seat number must be between 1 and " + this.seats);
+        }
         if (this.availableSeats > 0 && !this.seatIsTaken(row, seat)) {
             this.matrix[row - 1][seat - 1] = 'B';
             this.availableSeats--;
@@ -77,7 +95,10 @@ public class ScreenRoom {
         }
     }
 
-    public int getTicketPrice(int row) {
+    public int getTicketPrice(int row) throws IllegalArgumentException {
+        if (row < 1 || row > this.rows) {
+            throw new IllegalArgumentException("row number must be between 1 and " + this.rows);
+        }
         if (this.totalSeats > 60) {
             int frontHalf = this.rows / 2;
             return row <= frontHalf ? 10 : 8;
